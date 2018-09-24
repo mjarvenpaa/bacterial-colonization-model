@@ -1,102 +1,102 @@
 # Functions for computing distances, summaries and the discrepancy needed for the ABC inference.
 
 count.total.number.mutations <- function(pop) {
-	
-	pop$snp.sets
-	
-	snp.set.sizes <- unlist(lapply(pop$snp.sets, length))
-	num.snps.in.strains <- snp.set.sizes[pop$strains]
-	total.number.mutations <- sum(num.snps.in.strains)
-	
-	return(total.number.mutations)
-	
+  
+  pop$snp.sets
+  
+  snp.set.sizes <- unlist(lapply(pop$snp.sets, length))
+  num.snps.in.strains <- snp.set.sizes[pop$strains]
+  total.number.mutations <- sum(num.snps.in.strains)
+  
+  return(total.number.mutations)
+  
 }
 
 
 compute.distances.in.simulation <- function(save.path, save.extension, generations.to.consider, dist.path) {
-	
-	for (generation.index in generations.to.consider) {
-		
-		population.file.name <- paste(save.path, '/pop', generation.index, save.extension, '.RData', sep='')
-		
-		load(population.file.name) # pop
-		
-		distance.distribution <- compute.distance.distribution(pop=pop)
-		
-		distance.file.name <- paste(dist.path, '/distances', generation.index, save.extension, '.RData', sep='')
-		
-		save(distance.distribution, file=distance.file.name) 
-		
-	}
-	
+  
+  for (generation.index in generations.to.consider) {
+    
+    population.file.name <- paste(save.path, '/pop', generation.index, save.extension, '.RData', sep='')
+    
+    load(population.file.name) # pop
+    
+    distance.distribution <- compute.distance.distribution(pop=pop)
+    
+    distance.file.name <- paste(dist.path, '/distances', generation.index, save.extension, '.RData', sep='')
+    
+    save(distance.distribution, file=distance.file.name) 
+    
+  }
+  
 }
 
 
 compute.distance.distribution <- function(pop) {
-	# The value returned by this function is a list with two
-	# fields:
-	# 
-	# "snp.set.dist" is a distance matrix for SNP sets
-	# (the number of SNPs by which two sets differ)
-	# 
-	# "dist.elem.count" is also a matrix. Element (i,j)
-	# tells how many strain pairs there are, such that the
-	# first strain has SNP set i, and the second has set j.
-	#
-	# So, together these two specify the full distance
-	# distribution between all strain pairs. The distance
-	# between two specific strains x and y can be obtained 
-	# as snp.set.dist[pop$strains[x],pop$strains[y]]
-	
-	# Compute distance matrix between snp.sets
-	n.snp.sets <- length(pop$snp.sets)
-	snp.set.dist <- matrix(0, n.snp.sets, n.snp.sets)
-	dist.elem.count <- matrix(0, n.snp.sets, n.snp.sets)
-	
-	strain.type.counts <- table(pop$strains)
-	n.within.pairs <- choose(strain.type.counts,2)
-	# Check that all SNP sets are present in the population
-	if (!all(as.numeric(names(strain.type.counts)) == 1:n.snp.sets)) {
-		stop('Corrupt data structure')
-	}
-	
-	# Note the special case of no mutations: then snp.sets contain only empty list, the code now handles this
-	if (n.snp.sets == 1) {
-	  snp.set.dist <- matrix(0, 1, 1)
-	  dist.elem.count <- matrix(0, 1, 1)
-	  dist.elem.count[1, 1] <- n.within.pairs["1"]
-	}
-	else if (n.snp.sets > 1) {
-	  for (set1.index in seq(1, n.snp.sets - 1)) {
-	    set1 <- pop$snp.sets[[set1.index]]
-	    
-	    for (set2.index in seq(set1.index + 1, n.snp.sets)) {
-	      set2 <- pop$snp.sets[[set2.index]]
-	      
-	      # Distance is the number of SNPs that are found
-	      # in exactly one or the other of the SNP sets,
-	      # but not in both.
-	      snp.set.dist[set1.index, set2.index] <- length(union(set1, set2)) - length(intersect(set1, set2))
-	      
-	      # Compute the number of strain pairs that
-	      # have this distance, i.e., one of the strains
-	      # has set1 and the other has set2.
-	      dist.elem.count[set1.index, set2.index] <- strain.type.counts[as.character(set1.index)] * strain.type.counts[as.character(set2.index)]
-	      
-	    }
-	    dist.elem.count[set1.index, set1.index] <- n.within.pairs[as.character(set1.index)]
-	  }
-	  dist.elem.count[n.snp.sets, n.snp.sets] <- n.within.pairs[as.character(n.snp.sets)]
-	} else {
-	  stop('Corrupt data structure')
-	}
-	
-	res <- list()
-	res$snp.set.dist <- snp.set.dist + t(snp.set.dist) # Symmetric
-	res$dist.elem.count <- dist.elem.count
-	res$gen <- pop$gen
-	
-	return(res)
+  # The value returned by this function is a list with two
+  # fields:
+  # 
+  # "snp.set.dist" is a distance matrix for SNP sets
+  # (the number of SNPs by which two sets differ)
+  # 
+  # "dist.elem.count" is also a matrix. Element (i,j)
+  # tells how many strain pairs there are, such that the
+  # first strain has SNP set i, and the second has set j.
+  #
+  # So, together these two specify the full distance
+  # distribution between all strain pairs. The distance
+  # between two specific strains x and y can be obtained 
+  # as snp.set.dist[pop$strains[x],pop$strains[y]]
+  
+  # Compute distance matrix between snp.sets
+  n.snp.sets <- length(pop$snp.sets)
+  snp.set.dist <- matrix(0, n.snp.sets, n.snp.sets)
+  dist.elem.count <- matrix(0, n.snp.sets, n.snp.sets)
+  
+  strain.type.counts <- table(pop$strains)
+  n.within.pairs <- choose(strain.type.counts,2)
+  # Check that all SNP sets are present in the population
+  if (!all(as.numeric(names(strain.type.counts)) == 1:n.snp.sets)) {
+    stop('Corrupt data structure')
+  }
+  
+  # Note the special case of no mutations: then snp.sets contain only empty list, the code now handles this
+  if (n.snp.sets == 1) {
+    snp.set.dist <- matrix(0, 1, 1)
+    dist.elem.count <- matrix(0, 1, 1)
+    dist.elem.count[1, 1] <- n.within.pairs["1"]
+  }
+  else if (n.snp.sets > 1) {
+    for (set1.index in seq(1, n.snp.sets - 1)) {
+      set1 <- pop$snp.sets[[set1.index]]
+      
+      for (set2.index in seq(set1.index + 1, n.snp.sets)) {
+        set2 <- pop$snp.sets[[set2.index]]
+        
+        # Distance is the number of SNPs that are found
+        # in exactly one or the other of the SNP sets,
+        # but not in both.
+        snp.set.dist[set1.index, set2.index] <- length(union(set1, set2)) - length(intersect(set1, set2))
+        
+        # Compute the number of strain pairs that
+        # have this distance, i.e., one of the strains
+        # has set1 and the other has set2.
+        dist.elem.count[set1.index, set2.index] <- strain.type.counts[as.character(set1.index)] * strain.type.counts[as.character(set2.index)]
+        
+      }
+      dist.elem.count[set1.index, set1.index] <- n.within.pairs[as.character(set1.index)]
+    }
+    dist.elem.count[n.snp.sets, n.snp.sets] <- n.within.pairs[as.character(n.snp.sets)]
+  } else {
+    stop('Corrupt data structure')
+  }
+  
+  res <- list()
+  res$snp.set.dist <- snp.set.dist + t(snp.set.dist) # Symmetric
+  res$dist.elem.count <- dist.elem.count
+  res$gen <- pop$gen
+  
+  return(res)
 }
 
 
@@ -113,7 +113,7 @@ summaries.one.patient <- function(distance.distribution) {
   s1 <- sum(d.sum)/n.pairs
   
   # if other summaries are also used, add them here
-
+  
   return(s1)
 }
 
@@ -186,7 +186,7 @@ discrepancy <- function(discrepancy.type, dists, dists.AM, data, data.AM, save.i
   s.obs1 <- sapply(data$first, mean)
   s.obs2 <- sapply(data$last, mean)
   s.obs.AM1 <- sapply(data.AM, mean)
-
+  
   ## Compute the summaries from the simulation model 
   # 1) Summaries for the first data set (patients 1-8, possibly #1219 to be excluded)
   s.model1 <- rep(NA,n.first)

@@ -1,16 +1,16 @@
 # Misc. functions
 
 formulate.save.extension <- function(variables=c('mut'=0.0019, 'num'=500)) {
-	
-	save.extension <- ''
-	var.names <- names(variables)
-	for (i in 1:length(variables)) {
-		name.now <- var.names[i]
-		value.now <- signif(variables[i],digits=6)
-		save.extension <- paste(save.extension, '_', name.now, value.now, sep='')
-	}
-	
-	return(save.extension)
+  
+  save.extension <- ''
+  var.names <- names(variables)
+  for (i in 1:length(variables)) {
+    name.now <- var.names[i]
+    value.now <- signif(variables[i],digits=6)
+    save.extension <- paste(save.extension, '_', name.now, value.now, sep='')
+  }
+  
+  return(save.extension)
 }
 
 
