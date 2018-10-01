@@ -1,4 +1,4 @@
-This readme contains a brief introduction to the code used in the simulation experiments and analysis of CLEAR MRSA data in the paper titled 'A Bayesian model of acquisition and clearance of bacterial colonization incorporating within-host variation' by Järvenpää et al. (2018). The paper is available at [added soon]
+This readme contains a brief introduction to the code used in the simulation experiments and analysis of CLEAR MRSA data in the paper titled 'A Bayesian model of acquisition and clearance of bacterial colonization incorporating within-host variation' by Järvenpää et al. (2018). Preprint is available at https://www.biorxiv.org/content/early/2018/09/27/429464
 
 List of code files in /code/:
 =============================
