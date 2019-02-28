@@ -134,7 +134,7 @@ plot.cond.dens.table <- function(d_i1.samples, neff.grid, mu.grid, figure.filena
       if (all(is.finite(d_i1.samples[i,j,]))) {
         # we are inside prior support so draw the plot!
         titl.ij <- paste('p(d_i1|n_eff=', neff.grid[i], ', mu=', signif(mu.grid[j],digits=3), ')', sep = '')
-        hist(d_i1.samples[i,j,], main = titl.ij, xlab = 'd_i1', ylab = 'Simulated freq.', breaks = 0:(di1.max+1),
+        hist(d_i1.samples[i,j,], main = titl.ij, xlab = 'd_i1', ylab = 'Simulated freq.', breaks = 0:(di1.max+1), right=F,
              col = 'lightblue')
       }
     }
@@ -169,11 +169,11 @@ plot.simul.cond.dens <- function(d_i1.samples, neff.param, mu.param, figure.file
   for (i in 1:y) {
     for (j in 1:x) {
       titl.ij <- sprintf('$p(d_{i1}|n_{eff} = %i,\\, \\mu = %f)$', neff.param[i,j], signif(mu.param[i,j],digits=3))
-      par(mai=c(0.275,0.01,0.2,0.001))
+      par(mai=c(0.275,0.01,0.2,0.05))
       if (j == 1) {
-        par(mai=c(0.275,0.01,0.2,0.001))
+        par(mai=c(0.275,0.01,0.2,0.05))
       }
-      hist(d_i1.samples[i,j,], main = TeX(titl.ij), xlab = '', ylab = '', breaks = 0:(di1.max+1), freq=F, yaxt='n',
+      hist(d_i1.samples[i,j,], main = TeX(titl.ij), xlab = '', ylab = '', breaks = 0:(di1.max+1), right=F, freq=F, yaxt='n',
            col = 'lightblue')
     }
   }

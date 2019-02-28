@@ -218,7 +218,7 @@ plot.observed.di.density <- function(t_is, d_is, filename) {
     breaks <- 0:(max(d_is)+1)
     
     pdf(file = filename)
-    hist(x = d_is, xlab = TeX('$d_i$'), main = titl, breaks = breaks, freq = FALSE)
+    hist(x = d_is, xlab = TeX('$d_i$'), main = titl, breaks = breaks, right=F, freq = FALSE)
     dev.off()
   }
 }
@@ -269,7 +269,7 @@ plot.di.density <- function(neffs, mus, lambdas, neff.grid, mu.grid, p.sim, kt, 
     library(latex2exp)
     
     pdf(file = filename)
-    hist(x = d_i, xlab = TeX('$d_i$'), main = titl, breaks = breaks, freq = FALSE)
+    hist(x = d_i, xlab = TeX('$d_i$'), main = titl, breaks = breaks, right=F, freq = FALSE)
     dev.off()
   }
   invisible(d_i)
