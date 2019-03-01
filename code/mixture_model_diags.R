@@ -327,7 +327,7 @@ post.pred.check <- function(neffs, mus, lambdas, zs, t_0s, neff.grid, mu.grid, p
     for (i in points.to.draw) {
       breaks <- 0:(max(D[i,],d_is[i])+1)
       titl <- paste('d_i=', d_is[i], ', t_i=', round(t_is[i]), sep = '')
-      hist(x = D[i,], xlab = TeX('$d_i$'), ylab = 'Post. pred. density', main = titl, breaks = breaks, freq = FALSE,
+      hist(x = D[i,], xlab = TeX('$d_i$'), ylab = 'Post. pred. density', main = titl, breaks = breaks, right=F, freq = FALSE,
            col = 'lightblue')
       lines(x = d_is[i]*c(1,1), y = c(0,1), col = 'red') # plot also d_i measurement with red
     }
@@ -351,13 +351,13 @@ post.pred.check <- function(neffs, mus, lambdas, zs, t_0s, neff.grid, mu.grid, p
     par(mai=c(0.275,0.25,0.2,0.001))
     titl = 'observed data'
     breaks <- 0:(max(D,d_is)+1)
-    hist(x = d_is, xlab = TeX('$d_i$'), main = titl, breaks = breaks, freq = FALSE,
+    hist(x = d_is, xlab = TeX('$d_i$'), main = titl, breaks = breaks, right=F, freq = FALSE,
          col='lightblue', ylim = ylim.val)
     
     # plot replicated data from posterior predictive
     for (i in 1:reps.to.draw) {
       titl.i <- paste('simulated data, rep=',i,sep='')
-      hist(x = D[,i], xlab = TeX('$d_i$'), main = titl.i, breaks = breaks, freq = FALSE,
+      hist(x = D[,i], xlab = TeX('$d_i$'), main = titl.i, breaks = breaks, right=F, freq = FALSE,
            col='lightblue', ylim = ylim.val)
     }
     
@@ -366,12 +366,12 @@ post.pred.check <- function(neffs, mus, lambdas, zs, t_0s, neff.grid, mu.grid, p
     
     #titl = paste('observed data (d_i<',cut.dist,')',sep='')
     titl = 'observed data'
-    hist(x = d_is, xlab = TeX('$d_i$'), main = titl, breaks = breaks, freq = FALSE, xlim = c(0,cut.dist),
+    hist(x = d_is, xlab = TeX('$d_i$'), main = titl, breaks = breaks, right=F, freq = FALSE, xlim = c(0,cut.dist),
          col='lightblue', ylim = ylim.val)
     for (i in 1:reps.to.draw) {
       #titl.i <- paste('simulated data (d_i<',cut.dist,'), rep=',i,sep='')
       titl.i <- paste('simulated data, rep=',i,sep='')
-      hist(x = D[,i], xlab = TeX('$d_i$'), main = titl.i, breaks = breaks, freq = FALSE, xlim = c(0,cut.dist),
+      hist(x = D[,i], xlab = TeX('$d_i$'), main = titl.i, breaks = breaks, right=F, freq = FALSE, xlim = c(0,cut.dist),
            col='lightblue', ylim = ylim.val)
     }
     dev.off()
