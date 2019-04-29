@@ -11,7 +11,6 @@ get.mixture.model.data <- function(root, which.data='true1', which.arm='E', neff
     return(get.artificial.mixture.data(neff.grid, mu.grid, p.sim, true.params, print.info))
     
   } else if (which.data == 'true1') {
-    #return(get.mixture.model.data.true(root, arm = which.arm, plot.data = plot.data, print.info=print.info, which.data = which.data))
     return(get.preprocessed.mrsa.data(root, which.arm))
   } else {
     stop('Incorrect data set requested.')
@@ -66,8 +65,7 @@ get.artificial.mixture.data <- function(neff.grid, mu.grid, p.sim, true.params, 
     print('d_i:'); print(di)
     print('--------------------')
   }
-  return(list(t_is = ti, d_is = di, td_metadata = NA, 
-              t_is_excl = NA, d_is_excl = NA, td_metadata_excl = NA, true.params = true.params))
+  return(list(t_is = ti, d_is = di, td_metadata = NA))
 }
 
 
@@ -82,8 +80,7 @@ get.preprocessed.mrsa.data <- function(root, which.arm) {
   filename <- paste(root,'/data_CLEAR_minimal/',data.filename,which.arm,'.RData',sep = '')
   load(file = filename)
   
-  return(list(t_is = t_is, d_is = d_is, td_metadata = NA, 
-              t_is_excl = t_is_excl, d_is_excl = d_is_excl, td_metadata_excl = NA))
+  return(list(t_is = t_is, d_is = d_is, td_metadata = NA))
 }
 
 

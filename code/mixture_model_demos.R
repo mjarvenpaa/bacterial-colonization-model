@@ -14,7 +14,6 @@ compute.true.data <- function(root) {
   
   save.output.printing <- F # true if terminal output logged to file for collecting the final results
   plot.pred <- T # true if plot the results etc.
-  plot.strain.all <- T # true if plot e.g. E and D to same figure for the paper
   
   res <- list()
   i <- 1
@@ -36,12 +35,6 @@ compute.true.data <- function(root) {
       sink(type = "message")
     }
     i <- i + 1
-  }
-  
-  # plot all same strain probs for a new observation to one figure
-  if (plot.strain.all) {
-    filename <- paste(res.dir.name, '/same_strain_prob_all.pdf', sep='')
-    plot.strain.pred.figures(res, filename)
   }
 }
 
